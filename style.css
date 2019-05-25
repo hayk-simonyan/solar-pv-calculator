@@ -1,0 +1,8 @@
+.jumbotron {
+    min-height:100vh
+}
+
+.form-group input {
+    width: 20rem !important;
+    margin: 0 auto !important
+}

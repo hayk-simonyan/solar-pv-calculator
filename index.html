@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./bootstrap-4.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Solar Calculator</title>
+  </head>
+  <body class="bg-info">
+    <div class="container">
+        <div class="jumbotron text-center">
+            <div class="row d-flex justify-content-center">
+                <div class="loaderImage pt-5 mt-5" style="display: none">
+                    <img class="pt-5 mt-5" src="spin.svg" alt="">
+                </div>
+                <div class="col-10 calculated" style="display: none">
+                    <h1 class="text-primary mb-5">Արևային ՖՎ կայանի հաշվարկի արդյունքներ</h1>
+                    <div class="my-3">
+                        <span class="text-info">Փոփոխական հոսանքի կողմի հզորություն - P<sub>AC</sub> : </span><span id="Pac" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">Հաստատուն հոսանքի կողմի հզորություն - P<sub>DC</sub> : </span><span id="Pdc" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">ՖՎ զանգվածի հզորություն - P<sub>DCGEN</sub> : </span><span id="Pdcgen" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">ՖՎ մոդուլի առավելագույն լարում - V<sub>DCmaxMOD</sub> : </span><span id="Vdcmaxmod" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">ՖՎ մոդուլի նվազագույն լարում - V<sub>DCminMOD</sub> : </span><span id="Vdcminmod" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">Հաստատուն հոսանքի արժեք - I<sub>DCmaxMOD</sub> : </span><span id="Idcmaxstr" class="text-primary font-weight-bold"></span>
+                    </div>
+                    
+                    <div class="my-3">
+                        <span class="text-info">ՖՎ մոդուլների առավելագույն քանակ - n<sub>maxMODSTR</sub> : </span><span id="Nmaxmodstr" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">ՖՎ մոդուլների նվազագույն քանակ - n<sub>minMODSTR</sub> : </span><span id="Nminmodstr" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">ՖՎ մոդուլների օպտիմալ քանակ - n<sub>MODSTR</sub> : </span><span id="Nmodstr" class="text-primary font-weight-bold"></span>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-info">Շարքերի քանակ - n<sub>minSTR</sub> : </span><span id="Nminstr" class="text-primary font-weight-bold"></span>
+                    </div>
+                </div>
+                <div class="col-12 calculating">
+                    <h1 class="text-primary mb-5">Արևային ՖՎ կայանի հաշվիչ ծրագիր</h1>
+                    <form onsubmit="myFunction(event)">
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group text-center">
+                                    <label class="text-info" for="S">Ինվերտորի լրիվ Հզորություն - S<sub>AC</sub></label>
+                                    <input type="text" class="form-control text-center" id="S" aria-describedby="emailHelp" placeholder="մուտքագրեք S-ը">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="cos">Հզորության գործակից - cosφ</label>
+                                    <input type="text" class="form-control text-center" id="cos" placeholder="մուտքագրեք cosφ-ն">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="xetta">Օգտակար գործողության գործակից - η</label>
+                                    <input type="text" class="form-control text-center" id="xetta" placeholder="մուտքագրեք η-ն">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="npr">Նոմինալ հզորության գործակից - NPR (1-1.2)</label>
+                                    <input type="text" class="form-control text-center" id="npr" placeholder="մուտքագրեք NPR-ը">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Tmin">Նվազագույն ջերմաստիճան - T<sub>min</sub></label>
+                                    <input type="text" class="form-control text-center" id="Tmin" placeholder="մուտքագրեք Tmin-ը">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Vdcmaxwr">Ինվերտորի մուտքային առավելագույն լարում - V<sub>DCmaxWR</sub></label>
+                                    <input type="text" class="form-control text-center" id="Vdcmaxwr" placeholder="մուտքագրեք Vmax-ը">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Vdcminwr">Ինվերտորի MPP նվազագույն լարում - V<sub>DCmppminWR</sub></label>
+                                    <input type="text" class="form-control text-center" id="Vdcminwr" placeholder="մուտքագրեք Vmin-ը">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label class="text-info" for="Tmax">Առավելագույն ջերմաստիճան - T<sub>max</sub></label>
+                                    <input type="text" class="form-control text-center" id="Tmax" placeholder="մուտքագրեք Tmax-ը">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Tdeltav">V<sub>oc</sub>-ի ջերմաստիճանային գործակից</label>
+                                    <input type="text" class="form-control text-center" id="Tdeltav" placeholder="մուտքագրեք ΔT-ն">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Tdeltai">I<sub>sc</sub>-ի ջերմաստիճանային գործակից</label>
+                                    <input type="text" class="form-control text-center" id="Tdeltai" placeholder="մուտքագրեք ΔT-ն">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Voc">Պարապ ընթացքի լարում - V<sub>oc</sub></label>
+                                    <input type="text" class="form-control text-center" id="Voc" placeholder="մուտքագրեք Voc-ը">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Vmpp">Առավելագույն հզորության լարում - V<sub>mpp</sub></label>
+                                    <input type="text" class="form-control text-center" id="Vmpp" placeholder="մուտքագրեք Vmpp-ն">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Isc">Կարճ միացման հոսանք - I<sub>sc</sub></label>
+                                    <input type="text" class="form-control text-center" id="Isc" placeholder="մուտքագրեք Isc-ը">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info" for="Pmaxmod">Առավելագույն հզորության արժեք - P<sub>maxMOD</sub></label>
+                                    <input type="text" class="form-control text-center" id="Pmaxmod" placeholder="մուտքագրեք Pmax-ը">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Հաշվարկել</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
